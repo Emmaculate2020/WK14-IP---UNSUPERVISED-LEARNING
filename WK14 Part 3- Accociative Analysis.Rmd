@@ -1,0 +1,100 @@
+---
+title: "WK14 PART 3-ASSOCIATION ANALYSIS"
+author: "Emmaculate Okong'o"
+date: "7/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Defining the Question
+
+You are a Data analyst at Carrefour Kenya and are currently undertaking a project that will inform the marketing department on the most relevant marketing strategies that will result in the highest no. of sales (total price including tax). Your project has been divided into four parts where you'll explore a recent marketing dataset by performing various unsupervised learning techniques and later providing recommendations based on your insights.
+
+##### Defining the Metric for Success
+
+Apply associative rule then draw insights from the analysis.
+
+##### Recording the Experimental Design
+
+1. Reading the data
+2. Checking the data
+3. Tidying the data
+4. Associative Rule
+5. Challenging the solution
+6. Follow up questions
+
+#### Data Relevance
+
+The data provided on the Carrefour supermarket sales was relevant for our analysis.
+
+##### Loading the dataset
+```(R)
+sales <- read.csv("C:\\Users\\HP\\Downloads\\Supermarket_Sales_Dataset II.csv", header = TRUE, colClasses = "factor")
+
+# Previewing the dataset
+head(sales)
+
+View(sales)
+str(sales)
+dim(sales)
+class(sales)
+```
+
+##### Data Cleaning
+Looking for null values
+```(R)
+is.na(sales)
+
+# Removing empty columns from our dataset
+
+emptycols <- colSums(is.na(sales)) == nrow(sales)
+sales <- sales[!emptycols]
+View(sales)
+```
+
+#### ASSOCIATIVE ANALYSIS
+Loading the necessary libraries
+```(r)
+library(arules)
+```
+We find that we have a set of 2669356 rules and they are distributed accordingly as per the rule distribution outcome with observations ranging from 1 to 10.
+ 
+##### Building a model based on association rules
+We use Min Support as 0.5 and confidence as 0.9
+
+```(r)
+rules <- apriori(sales, parameter = list(supp = 0.5, conf = 0.9, target = "rules"))
+```
+
+We then perform an exploration of our model through the use of the summary function
+```(r)
+summary(rules)
+```
+##### Inspecting rules with the highest lift
+```(r)
+inspect(head(rules, by = "lift"))
+```
+##### The rules with the highest lift  andwhich form the combination of good purchased mostly together are as follows;
+lhs                    rhs               support confidence  coverage     lift count
+
+[1] {vegetables.mix=}   => {green.grapes=} 0.5541333          1 0.5541333 1.508447  4156
+
+[2] {vegetables.mix=,                                                                   
+whole.weat.flour=} => {green.grapes=} 0.5541333          1 0.5541333 1.508447  4156
+
+[3] {vegetables.mix=,                                                                   
+yams=}             => {green.grapes=} 0.5541333          1 0.5541333 1.508447  4156
+
+[4] {vegetables.mix=,                                                                   
+cottage.cheese=}   => {green.grapes=} 0.5541333          1 0.5541333 1.508447  4156
+
+[5] {vegetables.mix=,                                                                   
+energy.drink=}     => {green.grapes=} 0.5541333          1 0.5541333 1.508447  4156
+
+[6] {vegetables.mix=,                                                                   
+tomato.juice=}     => {green.grapes=} 0.5541333          1 0.5541333 1.508447  4156
+
+If at all the supermarket wants to increase their revenue, then they might consider ways of making spicy deals for the above goods through promotion and other methods.

@@ -1,0 +1,69 @@
+---
+title: "WK14 Part 4- DETECTING ANOMALIES"
+author: "Emmaculate Okong'o"
+date: "7/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Defining the Question
+
+You are a Data analyst at Carrefour Kenya and are currently undertaking a project that will inform the marketing department on the most relevant marketing strategies that will result in the highest no. of sales (total price including tax). Your project has been divided into four parts where you'll explore a recent marketing dataset by performing various unsupervised learning techniques and later providing recommendations based on your insights.
+
+##### Defining the Metric for Success
+
+Apply detecting anomalies algorithm then draw insights from the analysis.
+
+##### Recording the Experimental Design
+
+1. Reading the data
+2. Checking the data
+3. Tidying the data
+4. Detecting Anomalies
+5. Challenging the solution
+6. Follow up questions
+
+#### Data Relevance
+
+The data provided on the Carrefour supermarket sales was relevant for our analysis.
+
+
+#### Loading the dataset
+```(r)
+sales <- read.csv("C:\\Users\\HP\\Downloads\\Supermarket_Sales_Forecasting - Sales.csv", header = TRUE)
+
+# Previewing the dataset
+head(sales)
+
+View(sales)
+str(sales)
+dim(sales)
+class(sales)
+```
+
+##### Finding out the number of missing values in each column
+```(r)
+colSums(is.na(sales))
+```
+Our dataset do not have null values
+
+##### Collecting our time series data
+```(r)
+library(tidyverse)
+library(anomalize)
+tidyverse_cran_downloads
+```
+
+###### Detecting our anomalies
+```(r)
+tidyverse_cran_downloads %>%
+  time_decompose(count) %>%
+  anomalize(remainder) %>%
+  time_recompose() %>%
+  plot_anomalies(time_recomposed = TRUE, ncol = 3, alpha_dots = 0.5)
+```
+The anomalies are indicated by the red circles on the visual are can be removed by appropriate methods for further analysis if need be.
+On the hand, the owners of the supermarket might want to find out why they are having such anomalies.
