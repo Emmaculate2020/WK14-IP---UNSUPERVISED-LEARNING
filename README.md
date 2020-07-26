@@ -2,7 +2,7 @@
 
 ### Description
 
-- Week 13 Independent Project on Unsupervised Learning with R.
+- Week 14 Independent Project on Unsupervised Learning with R.
 
 - The problem statement;
 
